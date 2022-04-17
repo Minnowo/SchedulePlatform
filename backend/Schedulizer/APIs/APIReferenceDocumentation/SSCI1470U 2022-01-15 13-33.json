@@ -1,0 +1,265 @@
+{
+    "success": true,
+    "totalCount": 2,
+    "data": [
+        {
+            "id": 419334,
+            "term": "202201",
+            "termDesc": "Winter 2022",
+            "courseReferenceNumber": "72741",
+            "partOfTerm": "1",
+            "courseNumber": "1470U",
+            "subject": "SSCI",
+            "subjectDescription": "Social Science",
+            "sequenceNumber": "001",
+            "campusDescription": "OT-Online",
+            "scheduleTypeDescription": "Lecture",
+            "courseTitle": "Impact of Sci &amp; Tech on Soc.",
+            "creditHours": 3,
+            "maximumEnrollment": 275,
+            "enrollment": 275,
+            "seatsAvailable": 0,
+            "waitCapacity": 0,
+            "waitCount": 0,
+            "waitAvailable": 0,
+            "crossList": null,
+            "crossListCapacity": null,
+            "crossListCount": null,
+            "crossListAvailable": null,
+            "creditHourHigh": 3,
+            "creditHourLow": 0,
+            "creditHourIndicator": "OR",
+            "openSection": false,
+            "linkIdentifier": null,
+            "isSectionLinked": false,
+            "subjectCourse": "SSCI1470U",
+            "faculty": [
+                {
+                    "bannerId": "2673",
+                    "category": null,
+                    "class": "net.hedtech.banner.student.faculty.FacultyResultDecorator",
+                    "courseReferenceNumber": "72741",
+                    "displayName": "Muncaster, Andrew",
+                    "emailAddress": "Andrew.Muncaster@ontariotechu.ca",
+                    "primaryIndicator": true,
+                    "term": "202201"
+                }
+            ],
+            "meetingsFaculty": [
+                {
+                    "category": "01",
+                    "class": "net.hedtech.banner.student.schedule.SectionSessionDecorator",
+                    "courseReferenceNumber": "72741",
+                    "faculty": [],
+                    "meetingTime": {
+                        "beginTime": null,
+                        "building": null,
+                        "buildingDescription": null,
+                        "campus": null,
+                        "campusDescription": null,
+                        "category": "01",
+                        "class": "net.hedtech.banner.general.overall.MeetingTimeDecorator",
+                        "courseReferenceNumber": "72741",
+                        "creditHourSession": 3.0,
+                        "endDate": "04/14/2022",
+                        "endTime": null,
+                        "friday": false,
+                        "hoursWeek": 0.0,
+                        "meetingScheduleType": "LEC",
+                        "meetingType": "CLAS",
+                        "meetingTypeDescription": "Class",
+                        "monday": false,
+                        "room": null,
+                        "saturday": false,
+                        "startDate": "01/17/2022",
+                        "sunday": false,
+                        "term": "202201",
+                        "thursday": false,
+                        "tuesday": false,
+                        "wednesday": false
+                    },
+                    "term": "202201"
+                }
+            ],
+            "reservedSeatSummary": null,
+            "sectionAttributes": null,
+            "instructionalMethod": "WEB",
+            "instructionalMethodDescription": "Fully Online"
+        },
+        {
+            "id": 419336,
+            "term": "202201",
+            "termDesc": "Winter 2022",
+            "courseReferenceNumber": "72742",
+            "partOfTerm": "1",
+            "courseNumber": "1470U",
+            "subject": "SSCI",
+            "subjectDescription": "Social Science",
+            "sequenceNumber": "002",
+            "campusDescription": "OT-Online",
+            "scheduleTypeDescription": "Lecture",
+            "courseTitle": "Impact of Sci &amp; Tech on Soc.",
+            "creditHours": 3,
+            "maximumEnrollment": 275,
+            "enrollment": 275,
+            "seatsAvailable": 0,
+            "waitCapacity": 0,
+            "waitCount": 0,
+            "waitAvailable": 0,
+            "crossList": null,
+            "crossListCapacity": null,
+            "crossListCount": null,
+            "crossListAvailable": null,
+            "creditHourHigh": 3,
+            "creditHourLow": 0,
+            "creditHourIndicator": "OR",
+            "openSection": false,
+            "linkIdentifier": null,
+            "isSectionLinked": false,
+            "subjectCourse": "SSCI1470U",
+            "faculty": [
+                {
+                    "bannerId": "2673",
+                    "category": null,
+                    "class": "net.hedtech.banner.student.faculty.FacultyResultDecorator",
+                    "courseReferenceNumber": "72742",
+                    "displayName": "Muncaster, Andrew",
+                    "emailAddress": "Andrew.Muncaster@ontariotechu.ca",
+                    "primaryIndicator": true,
+                    "term": "202201"
+                }
+            ],
+            "meetingsFaculty": [
+                {
+                    "category": "01",
+                    "class": "net.hedtech.banner.student.schedule.SectionSessionDecorator",
+                    "courseReferenceNumber": "72742",
+                    "faculty": [],
+                    "meetingTime": {
+                        "beginTime": null,
+                        "building": null,
+                        "buildingDescription": null,
+                        "campus": null,
+                        "campusDescription": null,
+                        "category": "01",
+                        "class": "net.hedtech.banner.general.overall.MeetingTimeDecorator",
+                        "courseReferenceNumber": "72742",
+                        "creditHourSession": 3.0,
+                        "endDate": "04/14/2022",
+                        "endTime": null,
+                        "friday": false,
+                        "hoursWeek": 0.0,
+                        "meetingScheduleType": "LEC",
+                        "meetingType": "CLAS",
+                        "meetingTypeDescription": "Class",
+                        "monday": false,
+                        "room": null,
+                        "saturday": false,
+                        "startDate": "01/17/2022",
+                        "sunday": false,
+                        "term": "202201",
+                        "thursday": false,
+                        "tuesday": false,
+                        "wednesday": false
+                    },
+                    "term": "202201"
+                }
+            ],
+            "reservedSeatSummary": null,
+            "sectionAttributes": null,
+            "instructionalMethod": "WEB",
+            "instructionalMethodDescription": "Fully Online"
+        }
+    ],
+    "pageOffset": 0,
+    "pageMaxSize": 500,
+    "sectionsFetchedCount": 2,
+    "pathMode": "search",
+    "searchResultsConfigs": [
+        {
+            "config": "subject",
+            "display": "Subject",
+            "title": "Subject",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "courseNumber",
+            "display": "Course Number",
+            "title": "Course Number",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "courseTitle",
+            "display": "Title",
+            "title": "Title",
+            "required": true,
+            "width": "9%"
+        },
+        {
+            "config": "scheduleType",
+            "display": "Schedule Type",
+            "title": "Schedule Type",
+            "required": false,
+            "width": "5%"
+        },
+        {
+            "config": "sequenceNumber",
+            "display": "Section",
+            "title": "Section",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "courseReferenceNumber",
+            "display": "CRN",
+            "title": "CRN",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "creditHours",
+            "display": "Credit Hours",
+            "title": "Credit Hours",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "term",
+            "display": "Term",
+            "title": "Term",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "instructor",
+            "display": "Instructor",
+            "title": "Instructor",
+            "required": false,
+            "width": "8%"
+        },
+        {
+            "config": "meetingTime",
+            "display": "Meeting Times",
+            "title": "Meeting Times",
+            "required": false,
+            "width": "15%"
+        },
+        {
+            "config": "campus",
+            "display": "Campus",
+            "title": "Campus",
+            "required": false,
+            "width": "3%"
+        },
+        {
+            "config": "status",
+            "display": "Status",
+            "title": "Status",
+            "required": false,
+            "width": "6%"
+        }
+    ],
+    "ztcEncodedImage": null
+}
