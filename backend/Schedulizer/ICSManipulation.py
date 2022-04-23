@@ -13,7 +13,7 @@ from backend.Schedulizer.MeetingClass import Meeting
 from backend.Schedulizer.SemesterConfigHandler import SemesterConfig
 
 
-def create_ics_calendar(config_object: SemesterConfig, course_list: list, cache_id: str = None):
+def create_ics_calendar(config_object: SemesterConfig, course_list: list[Course], cache_id: str = None):
     """Create ics file given a list of course objects.
 
     Args:
@@ -33,7 +33,7 @@ def create_ics_calendar(config_object: SemesterConfig, course_list: list, cache_
         file.write(calendar.to_ical())
 
 
-def __build_course_event_list(config_object: SemesterConfig, course_list: list) -> list[icalendar.Event]:
+def __build_course_event_list(config_object: SemesterConfig, course_list: list[Course]) -> list[icalendar.Event]:
     """
 
     Args:
