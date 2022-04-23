@@ -89,15 +89,17 @@ class Course:
         Returns:
             Course from the decoded object.
         """
+        class_time_str = json.dumps(json.loads(json_str)["class_time"])
+
         simple = json.loads(json_str, object_hook=lambda d: SimpleNamespace(**d))
-        print(simple)
+
         return Course(fac=simple.fac,
                       uid=simple.uid,
                       crn=simple.crn,
                       class_type=simple.class_type,
                       title=simple.title,
                       section=simple.section,
-                      class_time=Course.deserialize_to_class_time(json_str),
+                      class_time=Course.deserialize_to_class_time(class_time_str),
                       is_linked=simple.is_linked,
                       link_tag=simple.link_tag,
                       seats_filled=simple.seats_filled,
