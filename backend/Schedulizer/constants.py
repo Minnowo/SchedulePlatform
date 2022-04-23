@@ -5,12 +5,11 @@ from datetime import timedelta
 
 from backend.Schedulizer.SemesterConfigHandler import decode_config
 
-
 # Cache file directory
 CACHE_DIRECTORY_PATH = "cache/"
 
 # Semester config files directory
-CONFIG_DIRECTORY_PATH = "configs/"
+CONFIG_DIRECTORY_PATH = "Schedulizer/configs/"
 
 # ICS Calendar base file name
 ICS_CALENDAR_FILENAME = "calendar.ics"
@@ -23,6 +22,4 @@ CLASS_INSTRUCTION_IN_PERSON_KEYS = ["in-class", "in-person"]  # API data at .ins
 OUTDATED_COURSE_METADATA_TIMEDELTA = timedelta(days=0, hours=0, minutes=30, seconds=0)
 
 # Enabled semester config templates
-ENABLED_CONFIGS_FILE_PATHS = {"202201": decode_config("configs/OTUUndergrad202201.json"),
-                              "202205": decode_config("configs/OTUUndergrad202205.json"),
-                              "DEVTEST": decode_config("configs/DEVTEST.json")}
+ENABLED_CONFIGS_FILE_PATH = CONFIG_DIRECTORY_PATH + "0_enabledConfigs.json"

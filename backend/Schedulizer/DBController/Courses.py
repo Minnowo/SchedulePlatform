@@ -102,7 +102,7 @@ def update_course_record(course_table: str, c: Course):
                     "max_capacity, instructors, is_virtual, metadata) "
                     "VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', %r, '%s', %d, %d, '%s', %r, NOW())" % (
                         course_table, c.crn, c.fac, c.uid, c.class_type[:25], c.title[:25], c.section,
-                        c.serialized_self_class_time(), c.is_linked, c.link_tag, c.seats_filled, c.max_capacity,
+                        c.get_serialized_self_class_time(), c.is_linked, c.link_tag, c.seats_filled, c.max_capacity,
                         c.instructors[:100], c.is_virtual)
                     )
 
@@ -111,7 +111,7 @@ def update_course_record(course_table: str, c: Course):
                     "class_time='%s', is_linked=%r, link_tag='%s', seats_filled=%d, instructors='%s', is_virtual=%r, "
                     "metadata=NOW() "
                     "WHERE crn=%d" % (
-                        course_table, c.serialized_self_class_time(), c.is_linked, c.link_tag, c.seats_filled,
+                        course_table, c.get_serialized_self_class_time(), c.is_linked, c.link_tag, c.seats_filled,
                         c.instructors[:100], c.is_virtual, c.crn)
                     )
 

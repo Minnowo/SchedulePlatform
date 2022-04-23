@@ -25,26 +25,10 @@ class NewEvent:
                 start_datetime=datetime.combine(date(2022, 2, 21), time.min),
                 end_datetime=datetime.combine(date(2022, 2, 25), time.max)
         """
-        self._name = name
-        self._description = description
-        self._start_datetime = start_datetime
-        self._end_datetime = end_datetime
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def description(self):
-        return self._description
-
-    @property
-    def start_datetime(self):
-        return self._start_datetime
-
-    @property
-    def end_datetime(self):
-        return self._end_datetime
+        self.name = name
+        self.description = description
+        self.start_datetime = start_datetime
+        self.end_datetime = end_datetime
 
     def __str__(self):
         """For prototyping purposes only.
@@ -52,7 +36,7 @@ class NewEvent:
         Returns:
             Default str similar to regular __str__ methods.
         """
-        return (f"name={self._name}\n"
-                f"description={self._description}\n"
-                f"start_datetime={self._start_datetime}\n"
-                f"end_datetime={self._end_datetime}")
+        return (f"name={self.name}\n"
+                f"description={self.description}\n"
+                f"start_datetime={self.start_datetime}\n"
+                f"end_datetime={self.end_datetime}")

@@ -5,6 +5,8 @@ It holds universally common course values such as instructors and capacity count
 
 import json
 from datetime import date, time
+from types import SimpleNamespace
+
 from backend.Schedulizer.MeetingClass import Meeting
 
 
@@ -32,80 +34,76 @@ class Course:
             is_virtual: Defines if the class is completely virtual/online.
         """
 
-        self._fac = fac
-        self._uid = uid
-        self._crn = crn
-        self._class_type = class_type
-        self._title = title
-        self._section = section
-        self._class_time = class_time
-        self._is_linked = is_linked
-        self._link_tag = link_tag
-        self._seats_filled = seats_filled
-        self._max_capacity = max_capacity
-        self._instructors = instructors
-        self._is_virtual = is_virtual
+        self.fac = fac
+        self.uid = uid
+        self.crn = crn
+        self.class_type = class_type
+        self.title = title
+        self.section = section
+        self.class_time = class_time
+        self.is_linked = is_linked
+        self.link_tag = link_tag
+        self.seats_filled = seats_filled
+        self.max_capacity = max_capacity
+        self.instructors = instructors
+        self.is_virtual = is_virtual
 
-    @property
-    def fac(self):
-        return self._fac
+    def get_serialized_self_class_time(self) -> str:
+        """Returns a short json class time (short form used for database storage) of self.class_time.
 
-    @property
-    def uid(self):
-        return self._uid
-
-    @property
-    def crn(self):
-        return self._crn
-
-    @property
-    def class_type(self):
-        return self._class_type
-
-    @property
-    def title(self):
-        return self._title
-
-    @property
-    def section(self):
-        return self._section
-
-    @property
-    def class_time(self):
-        return self._class_time
-
-    def serialized_self_class_time(self):
-        json_str = json.dumps(self._class_time, default=ClassTimeEncoder.default)
+        Returns:
+            json string of the converted self.class_time.
+        """
+        json_str = json.dumps(self.class_time, default=CourseClassEncoder.default)
         return json_str
 
     @staticmethod
-    def deserialize_to_class_time(json_str):
-        class_obj = json.loads(json_str, cls=ClassTimeDecoder)
-        return class_obj
+    def deserialize_to_class_time(json_str: str) -> list[Meeting]:
+        """Converts a short json class time (short form used for database storage) to appropriate format for
+        Course.class_time.
 
-    @property
-    def is_linked(self):
-        return self._is_linked
+        Args:
+            json_str: json string of the Course object to decode from.
 
-    @property
-    def link_tag(self):
-        return self._link_tag
+        Returns:
+            List of Meeting objects (Format for Course.class_time).
+        """
+        class_time = json.loads(json_str, cls=ClassTimeDecoder)
+        return class_time
 
-    @property
-    def seats_filled(self):
-        return self._seats_filled
+    def to_json(self) -> str:
+        """Converts a Course object to json str.
 
-    @property
-    def max_capacity(self):
-        return self._max_capacity
+        Returns:
+            json string of the Course object.
+        """
+        return json.dumps(self, default=CourseClassEncoder.default)
 
-    @property
-    def instructors(self):
-        return self._instructors
+    @staticmethod
+    def from_json(json_str: str):
+        """Converts a json str to Course object.
 
-    @property
-    def is_virtual(self):
-        return self._is_virtual
+        Args:
+            json_str: json string of the Course object to decode from.
+
+        Returns:
+            Course from the decoded object.
+        """
+        simple = json.loads(json_str, object_hook=lambda d: SimpleNamespace(**d))
+        print(simple)
+        return Course(fac=simple.fac,
+                      uid=simple.uid,
+                      crn=simple.crn,
+                      class_type=simple.class_type,
+                      title=simple.title,
+                      section=simple.section,
+                      class_time=Course.deserialize_to_class_time(json_str),
+                      is_linked=simple.is_linked,
+                      link_tag=simple.link_tag,
+                      seats_filled=simple.seats_filled,
+                      max_capacity=simple.max_capacity,
+                      instructors=simple.instructors,
+                      is_virtual=simple.is_virtual)
 
     def get_raw_str(self):
         """For prototyping purposes only.
@@ -113,29 +111,31 @@ class Course:
         Returns:
             Default str similar to regular __str__ methods.
         """
-        return (f"fac={self._fac}\n"
-                f"uid={self._uid}\n"
-                f"crn={self._crn}\n"
-                f"class_type={self._class_type}\n"
-                f"title={self._title}\n"
-                f"section={self._section}\n"
-                f"class_time={self._class_time}\n"
-                f"is_linked={self._is_linked}\n"
-                f"link_tag={self._link_tag}\n"
-                f"seats_filled={self._seats_filled}\n"
-                f"max_capacity={self._max_capacity}\n"
-                f"instructors={self._instructors}\n"
-                f"is_virtual={self._is_virtual}")
+        return (f"fac={self.fac}\n"
+                f"uid={self.uid}\n"
+                f"crn={self.crn}\n"
+                f"class_type={self.class_type}\n"
+                f"title={self.title}\n"
+                f"section={self.section}\n"
+                f"class_time={self.class_time}\n"
+                f"is_linked={self.is_linked}\n"
+                f"link_tag={self.link_tag}\n"
+                f"seats_filled={self.seats_filled}\n"
+                f"max_capacity={self.max_capacity}\n"
+                f"instructors={self.instructors}\n"
+                f"is_virtual={self.is_virtual}")
 
     def __str__(self):
         return self.get_raw_str()
 
 
-# vvv class_time encoders and decoders for serializing and deserializing vvv
+# vvv json encoders and decoders for serializing and deserializing vvv
 
+class CourseClassEncoder:
+    """class_time encoders for serializing to json data.
 
-class ClassTimeEncoder:
-    """class_time encoders for serializing to json data
+    This is only really required to handle datetime.date, datetime.time and datetime.datetime as iso format and the
+    rest is just handled as expected (dict and ints).
     """
 
     @staticmethod
@@ -149,15 +149,18 @@ class ClassTimeEncoder:
 
 
 class ClassTimeDecoder(json.JSONDecoder):
-    """class_time decoders from json for deserializing
+    """Course.class_time decoder from json for deserializing.
     """
 
     def __init__(self, *args, **kwargs):
         json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
 
     @staticmethod
-    def object_hook(dct):
-        return Meeting(time_start=time.fromisoformat(dct["_time_start"]), time_end=time.fromisoformat(dct["_time_end"]),
-                       weekday_int=dct["_weekday_int"], date_start=date.fromisoformat(dct["_date_start"]),
-                       date_end=date.fromisoformat(dct["_date_end"]),
-                       repeat_timedelta_days=dct["_repeat_timedelta_days"], location=dct["_location"])
+    def object_hook(dct) -> Meeting:
+        return Meeting(time_start=time.fromisoformat(dct["time_start"]),
+                       time_end=time.fromisoformat(dct["time_end"]),
+                       weekday_int=dct["weekday_int"],
+                       date_start=date.fromisoformat(dct["date_start"]),
+                       date_end=date.fromisoformat(dct["date_end"]),
+                       repeat_timedelta_days=dct["repeat_timedelta_days"],
+                       location=dct["location"])

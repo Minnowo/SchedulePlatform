@@ -25,51 +25,16 @@ class SemesterConfig:
             api_ratemyprof_uni_id:
             universal_events: list of NewEvent objects
         """
-        self._name = name
-        self._semester_start = semester_start
-        self._semester_end = semester_end
-        self._api_mycampus_mep_code = api_mycampus_mep_code
-        self._api_mycampus_term_id = api_mycampus_term_id
-        # _db_name is the equal of name but made safe for the SQL table name format rules
-        self._db_name = self.__get_db_name()  # _db_name must be set after the attributes above as it may use the
-        # value of other attributes
-        self._api_ratemyprof_uni_id = api_ratemyprof_uni_id
-        self._universal_events = universal_events
-
-    @property
-    def name(self):
-        return self._name
-
-    def __get_db_name(self):
-        return "config_" + self._name.replace(" ", "_")
-
-    @property
-    def db_name(self):
-        return self._db_name
-
-    @property
-    def semester_start(self):
-        return self._semester_start
-
-    @property
-    def semester_end(self):
-        return self._semester_end
-
-    @property
-    def api_mycampus_mep_code(self):
-        return self._api_mycampus_mep_code
-
-    @property
-    def api_mycampus_term_id(self):
-        return self._api_mycampus_term_id
-
-    @property
-    def api_ratemyprof_uni_id(self):
-        return self._api_ratemyprof_uni_id
-
-    @property
-    def universal_events(self):
-        return self._universal_events
+        self.name = name
+        self.semester_start = semester_start
+        self.semester_end = semester_end
+        self.api_mycampus_mep_code = api_mycampus_mep_code
+        self.api_mycampus_term_id = api_mycampus_term_id
+        # db_table_name is the equal of name but made safe for the SQL table name format rules
+        self.db_table_name = "config_" + self.name.replace(" ", "_")  # db_table_name must be set after the attributes
+        # above as it uses the name attribute value
+        self.api_ratemyprof_uni_id = api_ratemyprof_uni_id
+        self.universal_events = universal_events
 
     def __str__(self):
         """For prototyping purposes only.
@@ -77,15 +42,15 @@ class SemesterConfig:
         Returns:
             Default str similar to regular __str__ methods.
         """
-        universal_events_names = ", ".join([event.name for event in self._universal_events])
+        universal_events_names = ", ".join([event.name for event in self.universal_events])
 
-        return (f"name={self._name}\n"
-                f"db_name={self._db_name}\n"
-                f"semester_start={self._semester_start}\n"
-                f"semester_end={self._semester_end}\n"
-                f"api_mycampus_mep_code={self._api_mycampus_mep_code}\n"
-                f"api_mycampus_term_id={self._api_mycampus_term_id}\n"
-                f"api_ratemyprof_uni_id={self._api_ratemyprof_uni_id}\n"
+        return (f"name={self.name}\n"
+                f"db_name={self.db_table_name}\n"
+                f"semester_start={self.semester_start}\n"
+                f"semester_end={self.semester_end}\n"
+                f"api_mycampus_mep_code={self.api_mycampus_mep_code}\n"
+                f"api_mycampus_term_id={self.api_mycampus_term_id}\n"
+                f"api_ratemyprof_uni_id={self.api_ratemyprof_uni_id}\n"
                 f"universal_events.name={universal_events_names}")
 
 

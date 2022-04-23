@@ -59,7 +59,7 @@ def __op_update_course(config_object: SemesterConfig, course_code: str):
 
     if len(course_objects) > 0:
         for course_obj in course_objects:
-            update_course_record(course_table=config_object.db_name, c=course_obj)
+            update_course_record(course_table=config_object.db_table_name, c=course_obj)
             # TODO: Should make this multi threaded maybe. Takes a long time updating records of each course
             #  individually.
     else:
@@ -82,7 +82,7 @@ def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_i
     courses_list = []
 
     for crn in crn_codes:
-        course = get_course_via_crn(course_table=config_object.db_name, crn=crn)
+        course = get_course_via_crn(course_table=config_object.db_table_name, crn=crn)
 
         if course is None:
             raise RuntimeError(f"CRN {crn} not found!")
