@@ -1,6 +1,6 @@
 # Updated: 2022/04/16
 backend/secretsVPS.py
-backend/Schedulizer/cache/
+backend/cache
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
