@@ -3,6 +3,7 @@
 It holds universally common course values such as instructors and capacity count.
 """
 
+from pydantic import BaseModel
 import json
 from datetime import date, time
 from types import SimpleNamespace
@@ -10,43 +11,39 @@ from types import SimpleNamespace
 from backend.Schedulizer.MeetingClass import Meeting
 
 
-class Course:
-    def __init__(self, fac: str, uid: str, crn: int, class_type: str, title: str, section: str,
-                 class_time: list[Meeting], is_linked: bool, link_tag: str, seats_filled: int, max_capacity: int,
-                 instructors: str, is_virtual: bool):
-        """Course class defines a single general course identified by a CRN (course registration number).
+class Course(BaseModel):
+    """Course class defines a single general course identified by a CRN (course registration number).
 
-        Args:
-            fac: Faculty ID that identifies the c's faculty department. (Example: "MATH").
-            uid: (UID = University ID). A course ID code that ends with the 'U'. (Example: "1020U").
-            crn: (CRN = Course Registration Number). A unique int that represents each course. (Example: 12345).
-            class_type: Identifies the type of class. (Example: "Lecture", "Tutorial" & "Laboratory").
-            title: Title of the class. (Example: "Calculus II").
-            section: Section identifier, usually a number with possible leading zeros. (Example: "001").
-            class_time: List of Meeting objects. (MeetingClass.py).
-            is_linked: Defines if the class has any linked classes that are required.
-            link_tag: Identifies the link type for its c. (Example: "A1").
-                For computation, links are made with matching tags from classes with the same fac and uid.
-                Class with a link_tag="A1" needs to link with another class of link_tag="B#", where # is an integer.
-            seats_filled: Number of seats filled.
-            max_capacity: Maximum capacity of a course.
-            instructors: Each instructors' information.
-            is_virtual: Defines if the class is completely virtual/online.
-        """
+    fac: Faculty ID that identifies the c's faculty department. (Example: "MATH").
+    uid: (UID = University ID). A course ID code that ends with the 'U'. (Example: "1020U").
+    crn: (CRN = Course Registration Number). A unique int that represents each course. (Example: 12345).
+    class_type: Identifies the type of class. (Example: "Lecture", "Tutorial" & "Laboratory").
+    title: Title of the class. (Example: "Calculus II").
+    section: Section identifier, usually a number with possible leading zeros. (Example: "001").
+    class_time: List of Meeting objects. (MeetingClass.py).
+    is_linked: Defines if the class has any linked classes that are required.
+    link_tag: Identifies the link type for its c. (Example: "A1").
+        For computation, links are made with matching tags from classes with the same fac and uid.
+        Class with a link_tag="A1" needs to link with another class of link_tag="B#", where # is an integer.
+    seats_filled: Number of seats filled.
+    max_capacity: Maximum capacity of a course.
+    instructors: Each instructors' information.
+    is_virtual: Defines if the class is completely virtual/online.
+    """
 
-        self.fac = fac
-        self.uid = uid
-        self.crn = crn
-        self.class_type = class_type
-        self.title = title
-        self.section = section
-        self.class_time = class_time
-        self.is_linked = is_linked
-        self.link_tag = link_tag
-        self.seats_filled = seats_filled
-        self.max_capacity = max_capacity
-        self.instructors = instructors
-        self.is_virtual = is_virtual
+    fac: str
+    uid: str
+    crn: int
+    class_type: str
+    title: str
+    section: str
+    class_time: list[Meeting] = []
+    is_linked: bool
+    link_tag: str | None
+    seats_filled: int
+    max_capacity: int
+    instructors: str | None = None
+    is_virtual: bool = False
 
     def get_serialized_self_class_time(self) -> str:
         """Returns a short json class time (short form used for database storage) of self.class_time.

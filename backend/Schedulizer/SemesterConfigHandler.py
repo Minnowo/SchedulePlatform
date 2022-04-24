@@ -4,6 +4,7 @@ Includes info like config name, api values, etc.
 NOTE: Remember to update enabled configs in constants.py.
 """
 
+from pydantic import BaseModel
 import json
 from datetime import datetime
 from types import SimpleNamespace
@@ -11,30 +12,24 @@ from types import SimpleNamespace
 from backend.Schedulizer.NewEventClass import NewEvent
 
 
-class SemesterConfig:
-    def __init__(self, name: str, semester_start: datetime, semester_end: datetime, api_mycampus_mep_code: str,
-                 api_mycampus_term_id: str, api_ratemyprof_uni_id: str, universal_events: list[NewEvent]):
-        """Semester Config class, offers a standardized single object to represent all configs.
+class SemesterConfig(BaseModel):
+    """Semester Config class, offers a standardized single object to represent all configs.
 
-        Args:
-            name:
-            semester_start:
-            semester_end:
-            api_mycampus_mep_code:
-            api_mycampus_term_id:
-            api_ratemyprof_uni_id:
-            universal_events: list of NewEvent objects
-        """
-        self.name = name
-        self.semester_start = semester_start
-        self.semester_end = semester_end
-        self.api_mycampus_mep_code = api_mycampus_mep_code
-        self.api_mycampus_term_id = api_mycampus_term_id
-        # db_table_name is the equal of name but made safe for the SQL table name format rules
-        self.db_table_name = "config_" + self.name.replace(" ", "_")  # db_table_name must be set after the attributes
-        # above as it uses the name attribute value
-        self.api_ratemyprof_uni_id = api_ratemyprof_uni_id
-        self.universal_events = universal_events
+    name:
+    semester_start:
+    semester_end:
+    api_mycampus_mep_code:
+    api_mycampus_term_id:
+    api_ratemyprof_uni_id:
+    universal_events: list of NewEvent objects
+    """
+    name: str
+    semester_start: datetime
+    semester_end: datetime
+    api_mycampus_mep_code: str
+    api_mycampus_term_id: str
+    api_ratemyprof_uni_id: str
+    universal_events: list[NewEvent]
 
     def __str__(self):
         """For prototyping purposes only.
@@ -45,7 +40,6 @@ class SemesterConfig:
         universal_events_names = ", ".join([event.name for event in self.universal_events])
 
         return (f"name={self.name}\n"
-                f"db_name={self.db_table_name}\n"
                 f"semester_start={self.semester_start}\n"
                 f"semester_end={self.semester_end}\n"
                 f"api_mycampus_mep_code={self.api_mycampus_mep_code}\n"

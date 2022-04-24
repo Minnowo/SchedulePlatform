@@ -30,7 +30,7 @@ def general_crn_build(config_id: str, course_codes: list[str], crn_codes: list[i
     op_update_courses_with_overhead(config_object=config_obj, course_codes=course_codes)
 
     result = ", ".join(
-        get_course_via_crn(course_table=config_obj.db_table_name, crn=crn).to_json() for crn in crn_codes)
+        get_course_via_crn(course_table=config_obj.name, crn=crn).to_json() for crn in crn_codes)
 
     return result
 
