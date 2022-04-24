@@ -9,6 +9,8 @@ from backend.Schedulizer.APIs.MycampusAPI import get_json_course_data
 from backend.Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
 from backend.Schedulizer.ICSManipulation import create_ics_calendar
 from backend.Schedulizer.DBController.Courses import update_course_record, get_course_via_crn, is_up_to_date
+from backend.Schedulizer.CacheFilePathManipulation import get_cache_path
+from backend.Schedulizer.constants import ICS_CALENDAR_FILENAME
 
 
 def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes: list[str]):
@@ -66,13 +68,16 @@ def __op_update_course(config_object: SemesterConfig, course_code: str):
         raise RuntimeError(f"Course code {course_code} not found!")
 
 
-def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_id: str = None):
+def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_id: str = None) -> str:
     """
 
     Args:
         config_object: SemesterConfig object holding semester calendar info. (Typically = SemesterConfig.name).
         crn_codes: List of crn codes to find matching crn codes for.
         cache_id: cache id, default None.
+
+    Returns:
+        Cache file path of the created ics file.
     """
     if not isinstance(crn_codes, list) and not isinstance(crn_codes, tuple):
         raise TypeError("crn_codes should be a list of crn codes (int).")
@@ -89,4 +94,6 @@ def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_i
 
         courses_list.append(course)
 
-    create_ics_calendar(config_object=config_object, course_list=courses_list, cache_id=cache_id)
+    file_path = create_ics_calendar(config_object=config_object, course_list=courses_list, cache_id=cache_id)
+
+    return file_path
