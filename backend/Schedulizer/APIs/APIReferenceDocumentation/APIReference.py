@@ -7,8 +7,8 @@ basically no overhead, redundancies, input production, etc.
 import json
 from datetime import datetime
 
-from backend.Schedulizer.APIs.MycampusAPI import get_json_course_data
-from backend.Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
+from Schedulizer.APIs.MycampusAPI import get_json_course_data
+from Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
 
 
 def generate_api_file(mep_code: str, term_id: str, course_code: str, save_to_filepath: str | None = None):

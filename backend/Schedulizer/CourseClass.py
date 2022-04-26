@@ -7,7 +7,7 @@ import json
 from datetime import date, time
 from types import SimpleNamespace
 
-from backend.Schedulizer.MeetingClass import Meeting
+from Schedulizer.MeetingClass import Meeting
 
 
 class Course:

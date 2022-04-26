@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 import uvicorn
 
-from backend.SchedulizerCalls import general_crn_build, generate_crn_download_path
+from SchedulizerCalls import general_crn_build, generate_crn_download_path
 
 app = FastAPI()
 

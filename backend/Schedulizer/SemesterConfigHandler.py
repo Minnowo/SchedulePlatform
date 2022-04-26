@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 from types import SimpleNamespace
 
-from backend.Schedulizer.NewEventClass import NewEvent
+from Schedulizer.NewEventClass import NewEvent
 
 
 class SemesterConfig:
