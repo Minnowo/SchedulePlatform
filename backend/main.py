@@ -56,4 +56,4 @@ async def crn_download(config_id: str, course_codes: list[str], crn_codes: list[
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run("main:app", host="localhost", port=8000)
