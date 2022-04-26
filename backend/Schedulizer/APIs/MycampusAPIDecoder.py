@@ -5,9 +5,9 @@ Uses the Meeting class (MeetingClass) to populate the class_times properly/attri
 
 from datetime import datetime
 
-from backend.Schedulizer.constants import CLASS_INSTRUCTION_IN_PERSON_KEYS
-from backend.Schedulizer.CourseClass import Course
-from backend.Schedulizer.MeetingClass import Meeting
+from Schedulizer.constants import CLASS_INSTRUCTION_IN_PERSON_KEYS
+from Schedulizer.CourseClass import Course
+from Schedulizer.MeetingClass import Meeting
 
 
 def decode_api_json_to_course_obj(json_dict: dict) -> list[Course]:

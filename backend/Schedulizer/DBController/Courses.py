@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from backend.Schedulizer.constants import OUTDATED_COURSE_METADATA_TIMEDELTA
-from backend.Schedulizer.DBController.MysqlConnection import get_connection
-from backend.Schedulizer.CourseClass import Course
+from Schedulizer.constants import OUTDATED_COURSE_METADATA_TIMEDELTA
+from Schedulizer.DBController.MysqlConnection import get_connection
+from Schedulizer.CourseClass import Course
 
 
 def __check_add_course_table(course_table: str):

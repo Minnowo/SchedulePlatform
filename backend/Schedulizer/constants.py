@@ -3,7 +3,7 @@
 
 from datetime import timedelta
 
-from backend.Schedulizer.SemesterConfigHandler import decode_config
+from Schedulizer.SemesterConfigHandler import decode_config
 
 # Cache file directory
 CACHE_DIRECTORY_PATH = "cache/"

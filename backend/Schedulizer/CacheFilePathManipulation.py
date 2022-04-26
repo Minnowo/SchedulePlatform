@@ -7,7 +7,7 @@ file. For example, it might be the unique identifier for a user's generated ics 
 import os
 import errno
 
-from backend.Schedulizer.constants import CACHE_DIRECTORY_PATH
+from Schedulizer.constants import CACHE_DIRECTORY_PATH
 
 
 def get_cache_path(file_name: str, cache_id: str = None) -> str:

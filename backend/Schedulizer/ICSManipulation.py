@@ -6,11 +6,11 @@ import icalendar
 from icalendar import Calendar, Event
 from datetime import datetime, time, timedelta
 
-from backend.Schedulizer.constants import ICS_CALENDAR_FILENAME
-from backend.Schedulizer.CacheFilePathManipulation import get_cache_path
-from backend.Schedulizer.CourseClass import Course
-from backend.Schedulizer.MeetingClass import Meeting
-from backend.Schedulizer.SemesterConfigHandler import SemesterConfig
+from Schedulizer.constants import ICS_CALENDAR_FILENAME
+from Schedulizer.CacheFilePathManipulation import get_cache_path
+from Schedulizer.CourseClass import Course
+from Schedulizer.MeetingClass import Meeting
+from Schedulizer.SemesterConfigHandler import SemesterConfig
 
 
 def create_ics_calendar(config_object: SemesterConfig, course_list: list[Course], cache_id: str = None) -> str:

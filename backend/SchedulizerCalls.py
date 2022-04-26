@@ -3,10 +3,10 @@
 
 import json
 
-from backend.Schedulizer.DBController.Courses import get_course_via_crn
-from backend.Schedulizer.SemesterConfigHandler import decode_config
-from backend.Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
-from backend.Schedulizer.PrimaryOperations import op_update_courses_with_overhead, op_generate_ics
+from Schedulizer.DBController.Courses import get_course_via_crn
+from Schedulizer.SemesterConfigHandler import decode_config
+from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
+from Schedulizer.PrimaryOperations import op_update_courses_with_overhead, op_generate_ics
 
 
 def general_crn_build(config_id: str, course_codes: list[str], crn_codes: list[int]):

@@ -4,13 +4,13 @@ TODO: Warning! Unsafe usage of variables identifying SQL table names which are c
  connector. Security fix needed!
 """
 
-from backend.Schedulizer.SemesterConfigHandler import SemesterConfig
-from backend.Schedulizer.APIs.MycampusAPI import get_json_course_data
-from backend.Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
-from backend.Schedulizer.ICSManipulation import create_ics_calendar
-from backend.Schedulizer.DBController.Courses import update_course_record, get_course_via_crn, is_up_to_date
-from backend.Schedulizer.CacheFilePathManipulation import get_cache_path
-from backend.Schedulizer.constants import ICS_CALENDAR_FILENAME
+from Schedulizer.SemesterConfigHandler import SemesterConfig
+from Schedulizer.APIs.MycampusAPI import get_json_course_data
+from Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
+from Schedulizer.ICSManipulation import create_ics_calendar
+from Schedulizer.DBController.Courses import update_course_record, get_course_via_crn, is_up_to_date
+from Schedulizer.CacheFilePathManipulation import get_cache_path
+from Schedulizer.constants import ICS_CALENDAR_FILENAME
 
 
 def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes: list[str]):
