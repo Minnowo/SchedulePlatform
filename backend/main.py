@@ -8,12 +8,24 @@ Remember to get to the docs it looks like this: http://localhost:8000/docs
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from SchedulizerCalls import general_crn_build, generate_crn_download_path
 
 app = FastAPI()
 
+origins = [
+    'http://localhost:3000'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.get("/")
 async def root():

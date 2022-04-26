@@ -65,3 +65,8 @@ sudo systemctl restart mysql  # restart mysql service
 2. Change server timezone: `$ sudo timedatectl set-timezone America/Toronto`
 3. Check MySQL timezone: `$ sudo mysql -e "SELECT @@global.time_zone;"`
 4. Change MySQL timezone: `$ sudo mysql -e "SET GLOBAL time_zone = ‘-5:00’;"` or `mysql > SET time_zone = '+8:00'`
+
+### React Setup
+
+1. make sure you're in the `./frontend/client/` directory
+2. run `npm init`
