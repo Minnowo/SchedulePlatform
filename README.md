@@ -8,6 +8,7 @@
 
 ### Backend Dependencies - Python packages (`requirements.txt`)
 
+- [python-dotenv](https://github.com/theskumar/python-dotenv) >= 0.20.0
 - [fastapi](https://github.com/tiangolo/fastapi) >= 0.75.1
 - [uvicorn](https://www.uvicorn.org/) >= 0.17.6
 - [requests](https://docs.python-requests.org/en/latest/) >= 2.26.0
