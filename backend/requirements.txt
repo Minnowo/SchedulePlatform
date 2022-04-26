@@ -1,5 +1,6 @@
 # $ pip install -r requirements.txt
 
+python-dotenv~=0.20.0
 fastapi~=0.75.1
 uvicorn~=0.17.6
 requests~=2.26.0
