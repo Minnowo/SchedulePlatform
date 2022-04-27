@@ -29,6 +29,29 @@ class Course(BaseModel):
     max_capacity: Maximum capacity of a course.
     instructors: Each instructors' information.
     is_virtual: Defines if the class is completely virtual/online.
+
+    Examples:
+        Course(fac="MATH", uid="1020U", crn=70851, class_type="Lecture", title="Calculus II", section="021",
+               class_time=[Meeting(time_start=datetime.time(9, 40),
+                                   time_end=datetime.time(11, 0),
+                                   weekday_int=0,
+                                   date_start=datetime.date(2022, 1, 17),
+                                   date_end=datetime.date(2022, 4, 14),
+                                   repeat_timedelta_days=7,
+                                   location='UOW SYN SYN'),
+                           Meeting(time_start=datetime.time(9, 40),
+                                   time_end=datetime.time(11, 0),
+                                   weekday_int=3,
+                                   date_start=datetime.date(2022, 1, 17),
+                                   date_end=datetime.date(2022, 4, 14),
+                                   repeat_timedelta_days=7,
+                                   location='UOW SYN SYN')],
+               is_linked=True,
+               link_tag="A1",
+               seats_filled=165,
+               max_capacity=200,
+               instructors="LastName, Firstname (Firstname.LastName@ontariotechu.ca)",
+               is_virtual=True)
     """
 
     fac: str
