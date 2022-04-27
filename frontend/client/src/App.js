@@ -16,6 +16,7 @@ export default function App() {
       <Routes>
       <Route path="/" element={<Home/>}></Route>
       <Route path="/dl" element={<CalendarDL/>}></Route>
+      <Route path="/lol" element={<Home/>}></Route>
       </Routes>
  </Router>
    );

@@ -2,6 +2,18 @@ import React from 'react'
 import { useRef } from 'react';
 const CalendarDL = () => {
     //State:
+    const [blobURL,setBlobURL] = React.useState('');
+
+  function RenderLink() {
+      if(blobURL !== ''){
+        return (
+            <a href={blobURL} download="calendar.ics">DOWNLOAD</a>
+        )
+      } else {
+          console.log('nein')
+      }
+  }  
+    //Ref strings:
     const confInput = useRef('');
     const crnInput = useRef('');
 
@@ -9,10 +21,41 @@ const CalendarDL = () => {
     let config = confInput.current.value;
     let crn = crnInput.current.value;
 
-    //Requesting the API with above parameters:
-    fetch('http://localhost:8000')
-    .then(response => response.json())
-    .then(data => console.log(data));
+    let reqBody = {
+        "course_codes": [
+        ],
+        "crn_codes": [
+          70851
+        ]
+      }
+
+
+    //URL
+    fetch('http://localhost:8000/crn/'+config+'/download' , 
+
+    //Request Parameters
+        {
+        method: 'POST', // or 'PUT'
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    //Post Body to API
+        body: JSON.stringify(reqBody),
+    })
+
+    .then(response => response.blob())
+    .then(data => {
+        console.log(data);
+        const href = window.URL.createObjectURL(data);
+        setBlobURL(href);
+        console.log(blobURL);
+        RenderLink();
+    }).then(
+        z => {RenderLink();}
+    )
+    .catch((error) => {
+        console.error('Error:', error);
+    });  
 
   }  
 
@@ -23,6 +66,7 @@ const CalendarDL = () => {
     Enter the crn:
     <input type="text" ref={crnInput}></input>
     <button onClick={handleSubmit}>Submit </button>
+    {RenderLink()}
     </div>
   );
 }
