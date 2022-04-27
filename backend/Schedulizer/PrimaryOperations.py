@@ -90,17 +90,19 @@ def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes:
         config_object: SemesterConfig object holding semester calendar info. (Typically = SemesterConfig.name).
         course_codes: list of course codes to update for.
     """
-    course_codes = list(set(course_codes))  # Remove duplicates
-
     if not isinstance(course_codes, list) and not isinstance(course_codes, tuple):
         raise TypeError("course_codes should be a list of course codes (str).")
 
+    # Validate and remove duplicates
+    course_codes = [op_course_code_valid_format(code) for code in course_codes if op_course_code_valid_format(code)]
+    course_codes = list(set(course_codes))
+
     for course_code in course_codes:
         if not is_up_to_date(course_table=config_object.name, fac=course_code[:-5], uid=course_code[-5:]):
-            __op_update_course(config_object=config_object, course_code=course_code)
+            __update_course(config_object=config_object, course_code=course_code)
 
 
-def __op_update_course(config_object: SemesterConfig, course_code: str):
+def __update_course(config_object: SemesterConfig, course_code: str):
     """Pull course data from my MyCampus API and update/add new records of all the courses matching the course code.
 
     Args:
@@ -137,6 +139,8 @@ def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_i
     if not isinstance(crn_codes, list) and not isinstance(crn_codes, tuple):
         raise TypeError("crn_codes should be a list of crn codes (int).")
 
+    # Validate and remove duplicates
+    crn_codes = [crn for crn in crn_codes if isinstance(crn, int)]
     crn_codes = list(set(crn_codes))  # Remove duplicates
 
     courses_list = []
