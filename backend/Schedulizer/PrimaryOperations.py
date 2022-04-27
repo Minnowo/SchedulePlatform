@@ -16,7 +16,7 @@ from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
 
 
 def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes: list[str]):
-    """
+    """Update all course records of matching specified course codes if deemed out of date.
 
     Args:
         config_object: SemesterConfig object holding semester calendar info. (Typically = SemesterConfig.name).
@@ -33,11 +33,14 @@ def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes:
 
 
 def __op_update_course(config_object: SemesterConfig, course_code: str):
-    """
+    """Pull course data from my MyCampus API and update/add new records of all the courses matching the course code.
 
     Args:
         config_object: SemesterConfig object holding semester calendar info. (Typically = SemesterConfig.name).
         course_code: course to search by API for and update on internal DBController.
+
+    Raises:
+        ValueError: If no course of the given course code was returned from the MyCampus API.
     """
     course_objects = decode(get_json_course_data(mep_code=config_object.api_mycampus_mep_code,
                                                  term_id=config_object.api_mycampus_term_id,
@@ -49,11 +52,11 @@ def __op_update_course(config_object: SemesterConfig, course_code: str):
             # TODO: Should make this multi threaded maybe. Takes a long time updating records of each course
             #  individually.
     else:
-        raise RuntimeError(f"Course code {course_code} not found!")
+        raise ValueError(f"Course code {course_code} not found!")
 
 
 def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_id: str = None) -> str:
-    """
+    """Generate an .ics calendar file saved to a specified (cache) file path and return that path.
 
     Args:
         config_object: SemesterConfig object holding semester calendar info. (Typically = SemesterConfig.name).
