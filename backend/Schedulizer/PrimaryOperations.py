@@ -15,6 +15,74 @@ from Schedulizer.SemesterConfigHandler import decode_config
 from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
 
 
+def op_course_code_is_valid_possible(course_code: str) -> bool:
+    """Check if a course code string could be turned into valid form.
+
+    Args:
+        course_code: Course code defined by the school. (MATH1010U)
+
+    Returns:
+        True if valid, False if not.
+
+    Notes:
+        All given course codes are turned to uppercase here. The function here does not determine if the exact format
+        is valid, rather if its core values could be made into a valid course code.
+        For proper validation returns see: op_course_code_valid_format().
+
+    Examples:
+        >>> op_course_code_is_valid_possible("MATH1010U")
+        True
+        >>> op_course_code_is_valid_possible("Math1010u")
+        True
+        >>> op_course_code_is_valid_possible("Phy1010u")
+        True
+        >>> op_course_code_is_valid_possible("m a t h   1 0 1 0 u")
+        True
+        >>> op_course_code_is_valid_possible("maths1010u")
+        False
+        >>> op_course_code_is_valid_possible("ma1010u")
+        False
+    """
+    if not isinstance(course_code, str):
+        return False
+
+    course_code = course_code.replace(" ", "").upper()
+
+    # MATHS1010U -> fac = MATHS, uid = 1010U
+    fac = course_code[:-5]
+    uid = course_code[-5:]
+
+    if not ((3 <= len(fac) <= 4) and (not fac.isdigit()) and uid[:-1].isdigit() and uid[-1] == "U"):
+        return False
+
+    return True
+
+
+def op_course_code_valid_format(course_code: str) -> str | None:
+    """Returns the clean valid form (should be valid for all purposes in code) of a course code, None if not possible.
+
+    Args:
+        course_code: Course code defined by the school. (MATH1010U)
+
+    Returns:
+        Cleaned up valid course code or None if not possible.
+
+    Examples:
+        >>> op_course_code_valid_format("MATH1010U")
+        'MATH1010U'
+        >>> op_course_code_valid_format("Math1010u")
+        'MATH1010U'
+        >>> op_course_code_valid_format("m a t h   1 0 1 0 u")
+        'MATH1010U'
+        >>> op_course_code_valid_format("maths1010u")
+        None
+    """
+    if op_course_code_is_valid_possible(course_code):
+        return course_code.replace(" ", "").upper()
+
+    return None
+
+
 def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes: list[str]):
     """Update all course records of matching specified course codes if deemed out of date.
 
