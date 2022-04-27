@@ -4,13 +4,15 @@ TODO: Warning! Unsafe usage of variables identifying SQL table names which are c
  connector. Security fix needed!
 """
 
+import json
+
 from Schedulizer.SemesterConfigHandler import SemesterConfig
 from Schedulizer.APIs.MycampusAPI import get_json_course_data
 from Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
 from Schedulizer.ICSManipulation import create_ics_calendar
 from Schedulizer.DBController.Courses import update_course_record, get_course_via_crn, is_up_to_date
-from Schedulizer.CacheFilePathManipulation import get_cache_path
-from Schedulizer.constants import ICS_CALENDAR_FILENAME
+from Schedulizer.SemesterConfigHandler import decode_config
+from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
 
 
 def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes: list[str]):
@@ -28,24 +30,6 @@ def op_update_courses_with_overhead(config_object: SemesterConfig, course_codes:
     for course_code in course_codes:
         if not is_up_to_date(course_table=config_object.name, fac=course_code[:-5], uid=course_code[-5:]):
             __op_update_course(config_object=config_object, course_code=course_code)
-
-
-# TODO DISABLED NO OVERHEAD CODE FOR NOW (ONLY FOR TESTING PURPOSES)
-
-# def op_update_courses_no_overhead(config_object: SemesterConfig, course_codes: list[str]):
-#     """
-#
-#     Args:
-#         config_object: SemesterConfig object holding semester calendar info. (Typically = SemesterConfig.name).
-#         course_codes: course to search by API for and update on internal DBController.
-#     """
-#     course_codes = list(set(course_codes))  # Remove duplicates
-#
-#     if not isinstance(course_codes, list) and not isinstance(course_codes, tuple):
-#         raise TypeError("course_codes should be a list of course codes (str).")
-#
-#     for course_code in course_codes:
-#         __op_update_course(config_object=config_object, course_code=course_code)
 
 
 def __op_update_course(config_object: SemesterConfig, course_code: str):
@@ -97,3 +81,23 @@ def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int], cache_i
     file_path = create_ics_calendar(config_object=config_object, course_list=courses_list, cache_id=cache_id)
 
     return file_path
+
+
+def op_get_config(config_id: str) -> SemesterConfig | None:
+    """Get the matching SemesterConfig by id which is defined by ENABLED_CONFIGS_FILE_PATH.
+
+    Args:
+        config_id: Config ID specified in ENABLED_CONFIGS_FILE_PATH.
+
+    Returns:
+        SemesterConfig object or None if a matching enabled config was not found.
+    """
+    with open(ENABLED_CONFIGS_FILE_PATH) as file:
+        config_filepath = json.load(file)
+
+    try:
+        semester_config = decode_config(config_filepath[config_id])
+    except KeyError:
+        return None
+
+    return semester_config

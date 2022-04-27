@@ -1,12 +1,8 @@
 """Functions called by FastAPI app relating to Schedulizer logic.
 """
 
-import json
-
 from Schedulizer.DBController.Courses import get_course_via_crn
-from Schedulizer.SemesterConfigHandler import decode_config
-from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
-from Schedulizer.PrimaryOperations import op_update_courses_with_overhead, op_generate_ics
+from Schedulizer.PrimaryOperations import op_update_courses_with_overhead, op_generate_ics, op_get_config
 
 
 def general_crn_build(config_id: str, course_codes: list[str], crn_codes: list[int]):
@@ -22,10 +18,7 @@ def general_crn_build(config_id: str, course_codes: list[str], crn_codes: list[i
     Returns:
         Course data in json form.
     """
-    with open(ENABLED_CONFIGS_FILE_PATH) as file:
-        config_filepath = json.load(file)
-
-    config_obj = decode_config(config_filepath[config_id])
+    config_obj = op_get_config(config_id)
 
     op_update_courses_with_overhead(config_object=config_obj, course_codes=course_codes)
 
@@ -48,10 +41,7 @@ def generate_crn_download_path(config_id: str, course_codes: list[str], crn_code
     Returns:
         Cache file path of the created ics file.
     """
-    with open(ENABLED_CONFIGS_FILE_PATH) as file:
-        config_filepath = json.load(file)
-
-    config_obj = decode_config(config_filepath[config_id])
+    config_obj = op_get_config(config_id)
 
     op_update_courses_with_overhead(config_object=config_obj, course_codes=course_codes)
 
