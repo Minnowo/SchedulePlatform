@@ -16,7 +16,7 @@ ICS_CALENDAR_FILENAME = "calendar.ics"
 CLASS_INSTRUCTION_IN_PERSON_KEYS = ["in-class", "in-person"]  # API data at .instructionalMethodDescription
 
 # Course record metadata outdated timedelta
-OUTDATED_COURSE_METADATA_TIMEDELTA = timedelta(days=0, hours=0, minutes=30, seconds=0)
+OUTDATED_COURSE_METADATA_TIMEDELTA = timedelta(days=30, hours=0, minutes=0, seconds=0)
 
 # Enabled semester config templates
 ENABLED_CONFIGS_FILE_PATH = "Schedulizer/configs/0_enabledConfigs.json"

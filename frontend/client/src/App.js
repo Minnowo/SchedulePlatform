@@ -4,7 +4,7 @@ import './App.css';
 
 //Component imports:
 import Home from "./components/Home";
-import CalendarDL from './components/CalendarDL';
+import CalendarDL from './pages/CalendarDL';
 
 //React & Lib imports:
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -16,7 +16,6 @@ export default function App() {
       <Routes>
       <Route path="/" element={<Home/>}></Route>
       <Route path="/dl" element={<CalendarDL/>}></Route>
-      <Route path="/lol" element={<Home/>}></Route>
       </Routes>
  </Router>
    );
