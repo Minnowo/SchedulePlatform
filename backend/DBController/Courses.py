@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from Schedulizer.constants import OUTDATED_COURSE_METADATA_TIMEDELTA
-from Schedulizer.DBController.MysqlConnection import get_connection
+from DBController.MysqlConnection import get_connection
 from Schedulizer.CourseClass import Course
 
 

@@ -1,4 +1,4 @@
-from ...Schedulizer.DBController.MysqlConnection import get_connection
+from DBController.MysqlConnection import get_connection
 
 def init_User(): 
 
@@ -15,5 +15,3 @@ def init_User():
 
     cur.close()
     connection.close()
-
-    

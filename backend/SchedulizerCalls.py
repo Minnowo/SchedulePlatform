@@ -1,7 +1,7 @@
 """Functions called by FastAPI app relating to Schedulizer logic.
 """
 
-from Schedulizer.DBController.Courses import get_course_via_crn
+from DBController.Courses import get_course_via_crn
 from Schedulizer.PrimaryOperations import op_update_courses_with_overhead, op_generate_ics, op_get_config
 
 

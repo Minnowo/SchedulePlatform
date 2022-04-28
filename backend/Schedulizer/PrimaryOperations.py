@@ -10,7 +10,7 @@ from Schedulizer.SemesterConfigHandler import SemesterConfig
 from Schedulizer.APIs.MycampusAPI import get_json_course_data
 from Schedulizer.APIs.MycampusAPIDecoder import decode_api_json_to_course_obj as decode
 from Schedulizer.ICSManipulation import create_ics_calendar
-from Schedulizer.DBController.Courses import update_course_record, get_course_via_crn, is_up_to_date
+from DBController.Courses import update_course_record, get_course_via_crn, is_up_to_date
 from Schedulizer.SemesterConfigHandler import decode_config
 from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
 
