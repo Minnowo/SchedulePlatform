@@ -4,10 +4,11 @@
 from dotenv import load_dotenv
 import os
 
+#Local imports:
+from Util.Authentication import auth
 from DBController.MysqlConnection import get_connection
 
 load_dotenv()
-
 
 def __check_add_user_accounts_table():
     """Check that the user accounts table exists, if it doesn't exist make a new courses table.
@@ -16,6 +17,7 @@ def __check_add_user_accounts_table():
         Table name for storing basic user account data is held in .env and not passed as a parameter.
     """
     connection = get_connection()
+    #connection = con
     cur = connection.cursor(prepared=True)
     print("got cur")
 
@@ -33,3 +35,32 @@ def __check_add_user_accounts_table():
 
     cur.close()
     connection.close()
+
+# def get_user(username : str):
+
+#     connection = get_connection()
+
+#     __check_add_user_accounts_table(connection)
+
+#     cur = connection.cursor(prepared=True)
+
+def createUser(username: str, password: str, name: str, email: str):
+
+    connection = get_connection()
+
+    __check_add_user_accounts_table()
+    print("Get here!")
+
+    cur = connection.cursor(prepared=True)
+
+    password = auth.hashPassword(password)
+
+    # cur.execute("INSERT INTO %s (`username`,`password`, `name` , `email`) VALUES ('%s' , '%s' , '%s' , '%s')" % (os.getenv("SQL_USER_TABLE"), username, password, name, email)
+    # )
+
+    cur.execute("INSERT INTO %s VALUES ( '%s', '%s', '%s', '%s' )" % (os.getenv("SQL_USER_TABLE"), username,name, password, email))
+    cur.close()
+    connection.close()
+
+
+

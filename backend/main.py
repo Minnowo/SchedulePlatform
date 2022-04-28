@@ -6,12 +6,12 @@ of this file (main.py). However, here uvicorn is called so FastAPI should run wh
 Remember to get to the docs it looks like this: http://localhost:8000/docs
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Depends
+from DBController import UserAccounts
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordRequestForm 
 import uvicorn
-
-
 
 from SchedulizerCalls import general_crn_build, generate_crn_download_path
 
@@ -32,6 +32,22 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"Hello": "World"}
+
+
+@app.post('/auth/token')
+async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
+
+    postInfo = {
+        'username' : data.username,
+        'password' : data.password
+    }
+
+    # user = auth.AuthUser(postInfo)
+    
+@app.get('/createuser')
+async def create_user():
+    UserAccounts.createUser('testUser', 'helloworld','Jason x', 'test@gmail.com')
+    return {"Hello" : "World"}
 
 
 @app.post("/crn/{config_id}")
@@ -67,6 +83,7 @@ async def crn_download(config_id: str, course_codes: list[str], crn_codes: list[
     """
     cache_path = generate_crn_download_path(config_id=config_id, course_codes=course_codes, crn_codes=crn_codes)
     return FileResponse(path=cache_path, filename="calendar.ics", media_type='text/ics')
+
 
 
 if __name__ == "__main__":
