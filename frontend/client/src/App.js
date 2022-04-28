@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 //Component imports:
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import CalendarDL from './pages/CalendarDL';
 
 //React & Lib imports:
