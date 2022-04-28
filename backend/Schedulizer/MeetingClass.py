@@ -25,7 +25,7 @@ class Meeting(BaseModel):
     date_start: date
     date_end: date
     repeat_timedelta_days: int = 0
-    location: str
+    location: str | None
 
     def get_raw_str(self):
         return (f"time_start={self.time_start}\n"

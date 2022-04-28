@@ -59,7 +59,7 @@ class Course(BaseModel):
     crn: int
     class_type: str
     title: str
-    section: str
+    section: str | None
     class_time: list[Meeting] = []
     is_linked: bool
     link_tag: str | None
