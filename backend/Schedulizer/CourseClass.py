@@ -8,7 +8,7 @@ import json
 from datetime import date, time
 from types import SimpleNamespace
 
-from Schedulizer.MeetingClass import Meeting
+from Schedulizer.MeetingClass import Meeting, meeting_time_conflict
 
 
 class Course(BaseModel):
@@ -186,3 +186,32 @@ class ClassTimeDecoder(json.JSONDecoder):
                        date_end=date.fromisoformat(dct["date_end"]),
                        repeat_timedelta_days=dct["repeat_timedelta_days"],
                        location=dct["location"])
+
+
+def schedule_is_time_valid(course_list: list[Course]) -> bool:
+    """Determines if a list of Course objects (schedule) is has time conflicts.
+
+    Args:
+        course_list: List of course objects
+
+    Returns:
+        True if a schedule has no time conflicts, False if time conflicts exist.
+    """
+    # Initialize meeting times list
+    week = [[], [], [], [], [], [], []]  # Each index represents a weekday
+    # [Monday, Tuesday, ..., Sunday] <- Using weekday indexes
+
+    for course in course_list:
+        for meeting in course.class_time:
+            week[meeting.weekday_int].append(meeting)  # Fill each day sublist
+
+    for day in week:
+        day.sort(key=lambda mt: (mt.time_start, mt.time_end))
+        # Sort by first column values, then second column values. This ensures
+        # only the core required comparisons are made.
+
+        for i in range(len(day) - 1):
+            if meeting_time_conflict(day[i], day[i + 1]):  # Validate each pair
+                # (1, 2, 3) = (1 vs 2, 2 vs 3)
+                return False
+    return True

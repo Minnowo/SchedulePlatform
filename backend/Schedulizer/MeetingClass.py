@@ -131,3 +131,54 @@ class Meeting(BaseModel):
 
     def __str__(self):
         return self.get_raw_str()
+
+
+def meeting_time_conflict(meeting1: Meeting, meeting2: Meeting) -> bool:
+    """Determines if 2 Meeting objects have time conflicts
+
+    Args:
+        meeting1:
+        meeting2:
+
+    Returns:
+        True for a time conflict exists, False for no time conflict exists.
+    """
+    if (meeting1.weekday_int == meeting2.weekday_int and
+            # Meetings occur on the same weekday
+
+            # Meetings cross date intervals
+            (meeting1.get_actual_date_start()
+             <= meeting2.get_actual_date_start()
+             <= meeting1.get_actual_date_end()
+             or
+             meeting1.get_actual_date_start()
+             <= meeting2.get_actual_date_end()
+             <= meeting1.get_actual_date_end()
+             or
+             meeting2.get_actual_date_start()
+             <= meeting1.get_actual_date_start()
+             <= meeting2.get_actual_date_end()
+             or
+             meeting2.get_actual_date_start()
+             <= meeting1.get_actual_date_end()
+             <= meeting2.get_actual_date_end()) and
+
+            # Meetings cross time intervals
+            (meeting1.time_start
+             <= meeting2.time_start
+             < meeting1.time_end
+             or
+             meeting1.time_start
+             < meeting2.time_end
+             <= meeting1.time_end
+             or
+             meeting2.time_start
+             <= meeting1.time_start
+             < meeting2.time_end
+             or
+             meeting2.time_start
+             < meeting1.time_end
+             <= meeting2.time_end)):
+        return True
+
+    return False
