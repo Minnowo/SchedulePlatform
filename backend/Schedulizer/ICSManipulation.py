@@ -4,7 +4,7 @@ Able to utilize a Config object universal event data to generate universal event
 """
 import icalendar
 from icalendar import Calendar, Event
-from datetime import datetime, time, timedelta
+from datetime import datetime, time
 
 from Schedulizer.constants import ICS_CALENDAR_FILENAME
 from Schedulizer.CacheFilePathManipulation import get_cache_path
@@ -128,10 +128,7 @@ def __build_meeting_events(config_object: SemesterConfig, course: Course, meetin
         # Event start and date datetime. Create first event start and end by shifting.
         if meeting.date_start.weekday() != meeting.weekday_int:  # If the current start_datetime isn't matching the
             # target weekday_data
-            target_delta_int = meeting.weekday_int - meeting.date_start.weekday()  # Calculate the shift required
-            target_delta_int += 7 if target_delta_int < 0 else 0  # If your target is Monday and the start_time =
-            # Wednesday, target_delta_int shifts to the next future Monday (Not going back into a past Monday)
-            start_date = meeting.date_start + timedelta(days=target_delta_int)  # Shifted date
+            start_date = meeting.get_actual_date_start()  # Shifted date
         else:  # No shift required.
             start_date = meeting.date_start
 
