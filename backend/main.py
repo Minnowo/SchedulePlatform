@@ -45,14 +45,13 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
 
     user = auth.auth_user(username, password)
 
-    if not user:
+    if user == False:
         print("NOPE!")
         return
 
     access_token = auth.manager.create_access_token(
         data = {
             "username" : username,
-            "user_id"  : user.user_id
         }
     )
 
@@ -60,14 +59,13 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
         'access_token': access_token, 
         'token_type': 'bearer',
         'username'  : username,
-        'user_id'   : user.user_id
     }
 
 
-@app.get('/createuser')
-async def create_user():
+@app.post('/create/user')
+async def create_user(username: str, password: str, name: str, email: str):
     tic = time.perf_counter()
-    UserAccounts.create_user('testUser2', 'helloworld', 'Jason x', 'test@gmail.com')
+    UserAccounts.create_user(username,password,name,email)
     toc = time.perf_counter()
     
     print(f"A user was created in {toc-tic:0.4f} seconds")

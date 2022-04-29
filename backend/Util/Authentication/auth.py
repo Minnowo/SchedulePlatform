@@ -53,14 +53,11 @@ def auth_user(user_query: str, password: str) -> json:
     print(password)
 
     user = UserAccounts.search_user(user_query)
-    print(user)
+    print(user[2])
 
     if user is None:
         return 
     
-    if not verify_password(password, user[2]):
-        return 
-    
-    print("Yup, they match")
+    z =  verify_password(password, user[2])
+    return z
 
-    return
