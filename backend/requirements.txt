@@ -4,7 +4,10 @@ python-dotenv~=0.20.0
 pydantic~=1.9.0
 fastapi~=0.75.1
 fastapi-login~=1.8.0
+bcrypt~=3.2.0
 uvicorn~=0.17.6
 requests~=2.26.0
 mysql-connector-python~=8.0.27
 icalendar~=4.0.9
+python-multipart~=0.0.5
+# TODO: ^^^ Not sure why this is not installing with fastapi-login, might need to look into this later?

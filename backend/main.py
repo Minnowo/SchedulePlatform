@@ -50,7 +50,7 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
 @app.get('/createuser')
 async def create_user():
     tic = time.perf_counter()
-    UserAccounts.createUser('testUser2', 'helloworld','Jason x', 'test@gmail.com')
+    UserAccounts.create_user('testUser2', 'helloworld', 'Jason x', 'test@gmail.com')
     toc = time.perf_counter()
     
     print(f"A user was created in {toc-tic:0.4f} seconds")
@@ -59,7 +59,7 @@ async def create_user():
 
 @app.post('/c')
 async def c():
-    queriedUser = UserAccounts.searchUser('test@gmail.com')
+    queriedUser = UserAccounts.search_user('test@gmail.com')
     print(queriedUser)
 
 
