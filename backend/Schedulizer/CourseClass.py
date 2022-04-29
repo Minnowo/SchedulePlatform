@@ -91,6 +91,24 @@ class Course(BaseModel):
         class_time = json.loads(json_str, cls=ClassTimeDecoder)
         return class_time
 
+    def num_actual_meetings(self) -> int:
+        """Get the total number of times a course meeting actually occurs
+        essentially is the sum of each meeting's reoccurrence.
+
+        Returns:
+            Total number of times a course's class meets.
+
+        Notes:
+            Potential logic error due to bad data in of self.date_start and
+            self.date_end. See: Meeting.num_actual_meetings() documentation.
+        """
+        count = 0
+
+        for meeting in self.class_time:
+            count += meeting.num_actual_meetings()
+
+        return count
+
     def to_json(self) -> str:
         """Converts a Course object to json str.
 

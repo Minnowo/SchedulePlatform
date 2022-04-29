@@ -133,6 +133,29 @@ class Meeting(BaseModel):
 
         return backward_target_weekday(self.weekday_int, self.date_end)
 
+    def num_actual_meetings(self) -> int:
+        """Get the number of times a meeting actually occurs essentially is the
+        sum of each reoccurrence.
+
+        Returns:
+            Number of times a class meets.
+
+        Notes:
+            Potential logic error due to bad data in of self.date_start and
+            self.date_end. For example, courses are set to occur every week in
+            a semester, but do not account for reading week which removes 1
+            occurrence. Thus, 1 extra recurrence that does not actually exist
+            is counted. To correct this behaviour courses would need to split
+            meetings into 2 instances. One repeating each week till before
+            reading week, then starting again after.
+        """
+        if self.repeat_timedelta_days > 0:  # Account for reoccurrence
+            return ((self.get_actual_date_end()
+                     - self.get_actual_date_start()).days
+                    // self.repeat_timedelta_days + 1)
+
+        return 1  # Single day, no reoccurrence
+
     def get_raw_str(self):
         return (f"time_start={self.time_start}\n"
                 f"time_end={self.time_end}\n"
