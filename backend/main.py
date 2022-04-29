@@ -5,9 +5,11 @@ of this file (main.py). However, here uvicorn is called so FastAPI should run wh
 
 Remember to get to the docs it looks like this: http://localhost:8000/docs
 """
+import time
 
 from fastapi import FastAPI, Request, Depends
 from DBController import UserAccounts
+from Util.Authentication import auth
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm 
@@ -42,12 +44,26 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
         'password' : data.password
     }
 
-    # user = auth.AuthUser(postInfo)
-    
+    user = auth.AuthUser(postInfo)
+
+
 @app.get('/createuser')
 async def create_user():
-    UserAccounts.createUser('testUser', 'helloworld','Jason x', 'test@gmail.com')
+    tic = time.perf_counter()
+    UserAccounts.createUser('testUser2', 'helloworld','Jason x', 'test@gmail.com')
+    toc = time.perf_counter()
+    
+    print(f"A user was created in {toc-tic:0.4f} seconds")
+
     return {"Hello" : "World"}
+
+@app.post('/c')
+async def c():
+    queriedUser = UserAccounts.searchUser('test@gmail.com')
+    print(queriedUser)
+
+
+    return {'suc':'ces'}
 
 
 @app.post("/crn/{config_id}")

@@ -4,6 +4,8 @@
 from dotenv import load_dotenv
 import os
 
+from mysqlx import Row
+
 #Local imports:
 from Util.Authentication import auth
 from DBController.MysqlConnection import get_connection
@@ -62,5 +64,25 @@ def createUser(username: str, password: str, name: str, email: str):
     cur.close()
     connection.close()
 
+def searchUser(queryString: str) -> Row:
+
+    # queryString can either be the username or email STRING.
+    if not isinstance(queryString,str):
+        return None
+
+    connection = get_connection()
+
+    cur = connection.cursor(prepared=True)    
+
+    cur.execute("SELECT * FROM user_accounts WHERE username = '%s' OR email = '%s'" % (queryString, queryString) )
+
+    user = cur.fetchone()
+
+    if isinstance(user,str):
+        return user
 
 
+
+
+
+    
