@@ -39,12 +39,29 @@ async def root():
 @app.post('/auth/token')
 async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
 
-    postInfo = {
-        'username' : data.username,
-        'password' : data.password
-    }
 
-    user = auth.AuthUser(postInfo)
+    username = data.username
+    password = data.password
+
+    user = auth.auth_user(username, password)
+
+    if not user:
+        print("NOPE!")
+        return
+
+    access_token = auth.manager.create_access_token(
+        data = {
+            "username" : username,
+            "user_id"  : user.user_id
+        }
+    )
+
+    return {
+        'access_token': access_token, 
+        'token_type': 'bearer',
+        'username'  : username,
+        'user_id'   : user.user_id
+    }
 
 
 @app.get('/createuser')

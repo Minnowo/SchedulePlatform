@@ -74,7 +74,5 @@ def search_user(query_string: str) -> Row:  # TODO: Correct typing
 
     cur.execute("SELECT * FROM user_accounts WHERE username = '%s' OR email = '%s'" % (query_string, query_string))
 
-    user = cur.fetchone()
+    return cur.fetchone()
 
-    if isinstance(user, str):
-        return user

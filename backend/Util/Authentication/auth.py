@@ -31,18 +31,36 @@ def verify_password(password: str, hashed_password: str) -> bool:
     if isinstance(password, str):
         password = password.encode()
 
-    return bcrypt.checkpw(
-        base64.b64encode(
+    check_hash = base64.b64encode(
             hashlib.sha256(
                 password
-            )
-        ),
+            ).digest()
+        )
+
+    print(check_hash)
+
+    return bcrypt.checkpw(
+       check_hash,
         hashed_password.encode()
     )
 
 
 @manager.user_loader()
 def auth_user(user_query: str, password: str) -> json:
-    UserAccounts.search_user(user_query)
+
+    print("AUTH!")
+    print(user_query)
+    print(password)
+
+    user = UserAccounts.search_user(user_query)
+    print(user)
+
+    if user is None:
+        return 
+    
+    if not verify_password(password, user[2]):
+        return 
+    
+    print("Yup, they match")
 
     return
