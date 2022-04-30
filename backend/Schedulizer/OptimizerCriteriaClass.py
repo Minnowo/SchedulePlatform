@@ -1,4 +1,4 @@
-"""CourseOptimizerCriteria defines the criteria for the optimizer to calculate
+"""CourseOptimizerCriteria defines the criteria for the course_level_optimizer to calculate
 the rating value of a single Course object.
 """
 
@@ -87,23 +87,26 @@ class CourseOptimizerCriteria:
 
         if self.times_start is not None:
             for meeting in course.class_time:
-                if meeting.time_start > self.times_start[meeting.weekday_int]:
-                    # Meeting starts later, as requested
-                    rating += (1 * meeting.num_actual_meetings()
-                               * self.times_start_weight)
-                else:
-                    rating -= (1 * meeting.num_actual_meetings()
-                               * self.times_start_weight)
+                if self.times_start[meeting.weekday_int] is not None:
+                    if (meeting.time_start
+                            > self.times_start[meeting.weekday_int]):
+                        # Meeting starts later, as requested
+                        rating += (1 * meeting.num_actual_meetings()
+                                   * self.times_start_weight)
+                    else:
+                        rating -= (1 * meeting.num_actual_meetings()
+                                   * self.times_start_weight)
 
         if self.times_end is not None:
             for meeting in course.class_time:
-                if meeting.time_end < self.times_end[meeting.weekday_int]:
-                    # Meeting ends earlier, as requested
-                    rating += (1 * meeting.num_actual_meetings()
-                               * self.times_end_weight)
-                else:
-                    rating -= (1 * meeting.num_actual_meetings()
-                               * self.times_end_weight)
+                if self.times_start[meeting.weekday_int] is not None:
+                    if meeting.time_end > self.times_end[meeting.weekday_int]:
+                        # Meeting ends earlier, as requested
+                        rating += (1 * meeting.num_actual_meetings()
+                                   * self.times_end_weight)
+                    else:
+                        rating -= (1 * meeting.num_actual_meetings()
+                                   * self.times_end_weight)
 
         if self.is_virtual is not None:
             if self.is_virtual == course.is_virtual:
