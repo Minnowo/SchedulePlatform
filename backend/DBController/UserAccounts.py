@@ -9,6 +9,10 @@ from mysqlx import Row  # TODO: Check this? Redundant unneeded package in my opi
 from Util.Authentication import auth
 from DBController.MysqlConnection import get_connection
 
+from Util.Constant import InputFilter, Exceptions
+from backend.Util.Constant.Exceptions import API_409_USERNAME_CONFLICT
+
+
 load_dotenv()
 
 
@@ -19,9 +23,7 @@ def __check_add_user_accounts_table():
         Table name for storing basic user account data is held in .env and not passed as a parameter.
     """
     connection = get_connection()
-    # connection = con
     cur = connection.cursor(prepared=True)
-    print("got cur")
 
     cur.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name='%s'" % os.getenv("SQL_USER_TABLE"))
 
@@ -48,12 +50,35 @@ def __check_add_user_accounts_table():
 #     cur = connection.cursor(prepared=True)
 
 def create_user(username: str, password: str, name: str, email: str):
+
+    __check_add_user_accounts_table()   
+
+    if InputFilter.check_username_string(username) == False:
+        return Exceptions.API_406_USERNAME_INVALID
+
+    if InputFilter.check_email_string(email) == False:
+        return Exceptions.API_406_PARAM_INVALID
+    
+    if InputFilter.check_password_string(password) == False:
+        return Exceptions.API_406_PASSWORD_INVALID
+
+    print("Everything seems valid..")
+
     connection = get_connection()
 
-    __check_add_user_accounts_table()
-    print("Get here!")
-
     cur = connection.cursor(prepared=True)
+
+    cur.execute("SELECT * FROM %s WHERE username = '%s' OR email = '%s'" % (os.getenv("SQL_USER_TABLE"), username, password))
+    check_query = cur.fetchone()
+
+    if(check_query[0] == username):
+        return Exceptions.API_409_USERNAME_CONFLICT
+    
+    if(check_query[3] == email):
+        return Exceptions.API_409_EMAIL_CONFLICT
+
+
+    #TODO Make sure that the username & email is unique / valid
 
     password = auth.hash_password(password)
 
@@ -61,7 +86,6 @@ def create_user(username: str, password: str, name: str, email: str):
         os.getenv("SQL_USER_TABLE"), username, name, password, email))
     cur.close()
     connection.close()
-
 
 def search_user(query_string: str) -> Row:  # TODO: Correct typing
     # query_string can either be the username or email STRING.
