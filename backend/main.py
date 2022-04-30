@@ -10,6 +10,7 @@ import time
 from fastapi import FastAPI, Request, Depends
 from DBController import UserAccounts
 from Util.Authentication import auth
+from Util.Constant import Exceptions
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm 
@@ -43,11 +44,13 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
 
-    user = auth.auth_user(username, password)
+    user = auth.load_user(username)
 
-    if user == False:
-        print("NOPE!")
-        return
+    if user is None:
+        return Exceptions.API_404_USER_NOT_FOUND
+
+    if auth.verify_password(password, user[2]) == False:
+        return Exceptions.API_403_LOGIN_DENY
 
     access_token = auth.manager.create_access_token(
         data = {
@@ -64,13 +67,14 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
 
 @app.post('/create/user')
 async def create_user(username: str, password: str, name: str, email: str):
+
     tic = time.perf_counter()
-    UserAccounts.create_user(username,password,name,email)
+    creation = UserAccounts.create_user(username,password,name,email)
     toc = time.perf_counter()
     
     print(f"A user was created in {toc-tic:0.4f} seconds")
 
-    return {"Hello" : "World"}
+    return creation
 
 @app.post('/c')
 async def c():

@@ -37,7 +37,6 @@ def verify_password(password: str, hashed_password: str) -> bool:
             ).digest()
         )
 
-    print(check_hash)
 
     return bcrypt.checkpw(
        check_hash,
@@ -46,18 +45,11 @@ def verify_password(password: str, hashed_password: str) -> bool:
 
 
 @manager.user_loader()
-def auth_user(user_query: str, password: str) -> json:
-
-    print("AUTH!")
-    print(user_query)
-    print(password)
+def load_user(user_query: str) -> json:
 
     user = UserAccounts.search_user(user_query)
-    print(user[2])
 
     if user is None:
         return 
     
-    z =  verify_password(password, user[2])
-    return z
-
+    return user
