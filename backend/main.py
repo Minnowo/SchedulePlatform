@@ -40,10 +40,10 @@ async def root():
 @app.post('/auth/token')
 async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
 
-
     username = data.username
     password = data.password
 
+    print(username)
     user = auth.load_user(username)
 
     if user is None:
