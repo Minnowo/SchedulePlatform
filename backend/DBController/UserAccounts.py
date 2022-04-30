@@ -71,10 +71,12 @@ def create_user(username: str, password: str, name: str, email: str):
     cur.execute("SELECT * FROM %s WHERE username = '%s' OR email = '%s'" % (os.getenv("SQL_USER_TABLE"), username, password))
     check_query = cur.fetchone()
 
-    if(check_query[0] == username):
+    if check_query is None:
+        pass
+    elif(check_query[0] == username):
         return Exceptions.API_409_USERNAME_CONFLICT
     
-    if(check_query[3] == email):
+    elif(check_query[3] == email):
         return Exceptions.API_409_EMAIL_CONFLICT
 
 
