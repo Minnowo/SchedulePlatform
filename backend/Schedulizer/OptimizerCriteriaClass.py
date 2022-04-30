@@ -12,11 +12,15 @@ class CourseOptimizerCriteria:
     def __init__(self,
                  times_start: list[
                      time | None, time | None, time | None, time | None,
-                     time | None, time | None, time | None] = None,
+                     time | None, time | None, time | None]
+                 = [time.min, time.min, time.min, time.min, time.min, time.min,
+                    time.min],
                  times_start_weight: float = 0.0,
                  times_end: list[
                      time | None, time | None, time | None, time | None,
-                     time | None, time | None, time | None] = None,
+                     time | None, time | None, time | None]
+                 = [time.max, time.max, time.max, time.max, time.max, time.max,
+                    time.max],
                  times_end_weight: float = 0.0,
                  is_virtual: bool | None = None,
                  is_virtual_weight: float = 0.0,
@@ -89,7 +93,7 @@ class CourseOptimizerCriteria:
             for meeting in course.class_time:
                 if self.times_start[meeting.weekday_int] is not None:
                     if (meeting.time_start
-                            > self.times_start[meeting.weekday_int]):
+                            >= self.times_start[meeting.weekday_int]):
                         # Meeting starts later, as requested
                         rating += (1 * meeting.num_actual_meetings()
                                    * self.times_start_weight)
@@ -99,8 +103,8 @@ class CourseOptimizerCriteria:
 
         if self.times_end is not None:
             for meeting in course.class_time:
-                if self.times_start[meeting.weekday_int] is not None:
-                    if meeting.time_end > self.times_end[meeting.weekday_int]:
+                if self.times_end[meeting.weekday_int] is not None:
+                    if meeting.time_end <= self.times_end[meeting.weekday_int]:
                         # Meeting ends earlier, as requested
                         rating += (1 * meeting.num_actual_meetings()
                                    * self.times_end_weight)
