@@ -10,19 +10,31 @@ PASS_MIN_LEN = 8
 
 ALLOWED_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'
 
+
+# matches a-z A-Z 0-9 and _  4 <-> 29 times 
+IS_VALID_NAME = re.compile(r"^[a-zA-Z0-9_]{4,29}$") 
+
+
 def check_username_string(username: str) -> bool:
 
-    #Check type & length
-    if not isinstance(username, str) or len(username) > NAME_MAX_LEN or len(username) < NAME_MIN_LEN:
-        return False
+    # #Check type & length
+    # if not isinstance(username, str) or len(username) > NAME_MAX_LEN or len(username) < NAME_MIN_LEN:
+    #     return False
 
-    #Check characters
+    # #Check characters
 
-    for i in username:
-        if i not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789':
-            return False
+    # for i in username:
+    #     if i not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789':
+    #         return False
 
-    return True        
+    # return True        
+    
+    if not isinstance(username, str):
+        return False 
+
+    return IS_VALID_NAME.match(username) is not None 
+
+
 
 def check_email_string(email: str) -> bool:
 
