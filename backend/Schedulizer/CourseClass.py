@@ -1,6 +1,7 @@
 """Course class module.
 
-It holds universally common course values such as instructors and capacity count.
+The Course class and by extension the module's functions represent universal
+course structures and data values.
 """
 
 from pydantic import BaseModel
@@ -12,26 +13,36 @@ from Schedulizer.MeetingClass import Meeting, meeting_time_conflict
 
 
 class Course(BaseModel):
-    """Course class defines a single general course identified by a CRN (course registration number).
+    """Course class defines a single general course identified by a CRN (course
+    registration number).
 
-    fac: Faculty ID that identifies the c's faculty department. (Example: "MATH").
-    uid: (UID = University ID). A course ID code that ends with the 'U'. (Example: "1020U").
-    crn: (CRN = Course Registration Number). A unique int that represents each course. (Example: 12345).
-    class_type: Identifies the type of class. (Example: "Lecture", "Tutorial" & "Laboratory").
+    fac: Faculty ID identifying faculty department. (Example: "MATH").
+    uid: (UID = University ID). ID code ending with 'U'. (Example: "1020U").
+    crn: (CRN = Course Registration Number). A unique int that represents each
+        course. (Example: 12345).
+    class_type: Identifies the type of class. (Example: "Lecture", "Tutorial" &
+        "Laboratory").
     title: Title of the class. (Example: "Calculus II").
-    section: Section identifier, usually a number with possible leading zeros. (Example: "001").
+    section: Section identifier, usually a number with possible leading zeros.
+        (Example: "001").
     class_time: List of Meeting objects. (MeetingClass.py).
     is_linked: Defines if the class has any linked classes that are required.
     link_tag: Identifies the link type for its c. (Example: "A1").
-        For computation, links are made with matching tags from classes with the same fac and uid.
-        Class with a link_tag="A1" needs to link with another class of link_tag="B#", where # is an integer.
+        For computation, links are made with matching tags from classes with
+        the same fac and uid. Class with a link_tag="A1" needs to link with
+        another class of link_tag="B#", where # is an integer.
     seats_filled: Number of seats filled.
     max_capacity: Maximum capacity of a course.
     instructors: Each instructors' information.
     is_virtual: Defines if the class is completely virtual/online.
 
     Examples:
-        Course(fac="MATH", uid="1020U", crn=70851, class_type="Lecture", title="Calculus II", section="021",
+        Course(fac="MATH",
+               uid="1020U",
+               crn=70851,
+               class_type="Lecture",
+               title="Calculus II",
+               section="021",
                class_time=[Meeting(time_start=datetime.time(9, 40),
                                    time_end=datetime.time(11, 0),
                                    weekday_int=0,
@@ -50,7 +61,7 @@ class Course(BaseModel):
                link_tag="A1",
                seats_filled=165,
                max_capacity=200,
-               instructors="LastName, Firstname (Firstname.LastName@ontariotechu.ca)",
+               instructors="LastName, FirstName (FirstName.LastName@domain.ca)",
                is_virtual=True)
     """
 
@@ -69,18 +80,20 @@ class Course(BaseModel):
     is_virtual: bool = False
 
     def get_serialized_self_class_time(self) -> str:
-        """Returns a short json class time (short form used for database storage) of self.class_time.
+        """Returns a short json class time (short form used for database
+        storage) of self.class_time.
 
         Returns:
             json string of the converted self.class_time.
         """
-        json_str = json.dumps(self.class_time, default=CourseClassEncoder.default)
+        json_str = json.dumps(self.class_time,
+                              default=CourseClassEncoder.default)
         return json_str
 
     @staticmethod
     def deserialize_to_class_time(json_str: str) -> list[Meeting]:
-        """Converts a short json class time (short form used for database storage) to appropriate format for
-        Course.class_time.
+        """Converts a short json class time (short form used for database
+        storage) to appropriate format for Course.class_time.
 
         Args:
             json_str: json string of the Course object to decode from.
@@ -117,34 +130,6 @@ class Course(BaseModel):
         """
         return json.dumps(self, default=CourseClassEncoder.default)
 
-    @staticmethod
-    def from_json(json_str: str):
-        """Converts a json str to Course object.
-
-        Args:
-            json_str: json string of the Course object to decode from.
-
-        Returns:
-            Course from the decoded object.
-        """
-        class_time_str = json.dumps(json.loads(json_str)["class_time"])
-
-        simple = json.loads(json_str, object_hook=lambda d: SimpleNamespace(**d))
-
-        return Course(fac=simple.fac,
-                      uid=simple.uid,
-                      crn=simple.crn,
-                      class_type=simple.class_type,
-                      title=simple.title,
-                      section=simple.section,
-                      class_time=Course.deserialize_to_class_time(class_time_str),
-                      is_linked=simple.is_linked,
-                      link_tag=simple.link_tag,
-                      seats_filled=simple.seats_filled,
-                      max_capacity=simple.max_capacity,
-                      instructors=simple.instructors,
-                      is_virtual=simple.is_virtual)
-
     def get_raw_str(self):
         """For prototyping purposes only.
 
@@ -169,13 +154,42 @@ class Course(BaseModel):
         return self.get_raw_str()
 
 
+def from_json(json_str: str) -> Course:
+    """Converts a json str to Course object.
+
+    Args:
+        json_str: json string of the Course object to decode from.
+
+    Returns:
+        Course from the decoded object.
+    """
+    class_time_str = json.dumps(json.loads(json_str)["class_time"])
+
+    simple = json.loads(json_str, object_hook=lambda d: SimpleNamespace(**d))
+
+    return Course(fac=simple.fac,
+                  uid=simple.uid,
+                  crn=simple.crn,
+                  class_type=simple.class_type,
+                  title=simple.title,
+                  section=simple.section,
+                  class_time=Course.deserialize_to_class_time(class_time_str),
+                  is_linked=simple.is_linked,
+                  link_tag=simple.link_tag,
+                  seats_filled=simple.seats_filled,
+                  max_capacity=simple.max_capacity,
+                  instructors=simple.instructors,
+                  is_virtual=simple.is_virtual)
+
+
 # vvv json encoders and decoders for serializing and deserializing vvv
 
 class CourseClassEncoder:
     """class_time encoders for serializing to json data.
 
-    This is only really required to handle datetime.date, datetime.time and datetime.datetime as iso format and the
-    rest is just handled as expected (dict and ints).
+    This is only really required to handle datetime.date, datetime.time and
+    datetime.datetime as iso format and the rest is just handled as expected
+    (dict and ints).
     """
 
     @staticmethod
@@ -193,7 +207,8 @@ class ClassTimeDecoder(json.JSONDecoder):
     """
 
     def __init__(self, *args, **kwargs):
-        json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
+        json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args,
+                                  **kwargs)
 
     @staticmethod
     def object_hook(dct) -> Meeting:
