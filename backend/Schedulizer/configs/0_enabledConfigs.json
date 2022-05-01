@@ -1,3 +1,4 @@
 {
-  "202205": "Schedulizer/configs/OTUUndergrad202205.json"
+  "202205": "Schedulizer/configs/OTUUndergrad202205.json",
+  "DEVTEST" : "Schedulizer/configs/DEVTEST.json"
 }

@@ -4,13 +4,11 @@
 from dotenv import load_dotenv
 import os
 
-from mysqlx import Row  # TODO: Check this? Redundant unneeded package in my opinion - Daniel
 
 from Util.Authentication import auth
 from DBController.MysqlConnection import get_connection
 
 from Util.Constant import InputFilter, Exceptions
-from backend.Util.Constant.Exceptions import API_409_USERNAME_CONFLICT
 
 
 load_dotenv()
@@ -89,7 +87,7 @@ def create_user(username: str, password: str, name: str, email: str):
     cur.close()
     connection.close()
 
-def search_user(query_string: str) -> Row:  # TODO: Correct typing
+def search_user(query_string: str):  
     # query_string can either be the username or email STRING.
     if not isinstance(query_string, str):
         return None

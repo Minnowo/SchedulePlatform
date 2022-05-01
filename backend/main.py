@@ -54,7 +54,7 @@ async def login(req: Request, data: OAuth2PasswordRequestForm = Depends()):
 
     access_token = auth.manager.create_access_token(
         data = {
-            "username" : username,
+            "sub" : username,
         }
     )
 
@@ -83,6 +83,14 @@ async def c():
 
 
     return {'suc':'ces'}
+
+
+@app.get('/profile')
+async def secure(req: Request, user = Depends(auth.manager)):
+    #print(await auth.manager._get_token(req))
+    print(user)
+    if user:
+        return {"valid" : "welcome back!"}
 
 
 @app.post("/crn/{config_id}")

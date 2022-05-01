@@ -2,7 +2,11 @@ import React from 'react'
 import { useRef } from 'react';
 import ENDPOINT from '../API';
 
+import Cookies from 'universal-cookie';
+
 const Login = (props) => {
+
+  const cookies = new Cookies();
 
   //Ref strings:
   const usernameStr = useRef('');
@@ -12,10 +16,7 @@ const Login = (props) => {
     
     event.preventDefault()
 
-
-
-
-    const resp = await fetch(ENDPOINT + "auth/token/", 
+    const resp = await fetch(ENDPOINT + 'auth/token/', 
 
     //Request Params
     {
@@ -26,8 +27,12 @@ const Login = (props) => {
       body: JSON.stringify(
         `grant_type=&username=${usernameStr.current.value}&password=${passwordStr.current.value}&scope=&client_id=&client_secret=`
       ),
-    }).then(resp => resp.json()).then(e => console.log(e))
+    })
+    
+    const respJSON = await resp.json();
 
+    cookies.set('access_token' , respJSON.access_token);
+    cookies.set('token_type' , respJSON.token_type);
 
 }
 
@@ -49,7 +54,7 @@ const Login = (props) => {
             placeholder="Password"
             required=''
             maxLength='25'
-            minLength='8'
+            minLength='4'
             ref={passwordStr}>
         </input>
 
