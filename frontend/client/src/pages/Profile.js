@@ -2,6 +2,7 @@ import React from 'react'
 import ENDPOINT from '../API';
 import Cookies from 'universal-cookie';
 import { useEffect } from 'react';
+import Calendar from '../components/Calendar';
 
 const Profile = () => {
   
@@ -61,7 +62,9 @@ const Profile = () => {
 
 
   return (
-    <div>Profile</div>
+    <div>Profile
+    <Calendar/>
+    </div>
   )
 }
 
