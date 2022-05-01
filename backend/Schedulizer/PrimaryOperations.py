@@ -14,7 +14,7 @@ from Schedulizer.SemesterConfigHandler import decode_config
 from Schedulizer.constants import ENABLED_CONFIGS_FILE_PATH
 
 
-def op_course_code_is_valid_possible(course_code: str) -> bool:
+def __course_code_is_valid_possible(course_code: str) -> bool:
     """Check if a course code string could be turned into valid form.
 
     Args:
@@ -30,17 +30,17 @@ def op_course_code_is_valid_possible(course_code: str) -> bool:
             For proper validation returns see: op_course_code_valid_format().
 
     Examples:
-        >>> op_course_code_is_valid_possible("MATH1010U")
+        >>> __course_code_is_valid_possible("MATH1010U")
         True
-        >>> op_course_code_is_valid_possible("Math1010u")
+        >>> __course_code_is_valid_possible("Math1010u")
         True
-        >>> op_course_code_is_valid_possible("Phy1010u")
+        >>> __course_code_is_valid_possible("Phy1010u")
         True
-        >>> op_course_code_is_valid_possible("m a t h   1 0 1 0 u")
+        >>> __course_code_is_valid_possible("m a t h   1 0 1 0 u")
         True
-        >>> op_course_code_is_valid_possible("maths1010u")
+        >>> __course_code_is_valid_possible("maths1010u")
         False
-        >>> op_course_code_is_valid_possible("ma1010u")
+        >>> __course_code_is_valid_possible("ma1010u")
         False
     """
     if not isinstance(course_code, str):
@@ -79,7 +79,7 @@ def op_course_code_valid_format(course_code: str) -> str | None:
         >>> op_course_code_valid_format("maths1010u")
         None
     """
-    if op_course_code_is_valid_possible(course_code):
+    if __course_code_is_valid_possible(course_code):
         return course_code.replace(" ", "").upper()
 
     return None
@@ -101,7 +101,7 @@ def op_update_courses_with_overhead(config_object: SemesterConfig,
 
     # Validate and remove duplicates
     course_codes = [op_course_code_valid_format(code) for code in course_codes
-                    if op_course_code_valid_format(code)]
+                    if op_course_code_valid_format(code) is not None]
     course_codes = list(set(course_codes))
 
     for course_code in course_codes:
@@ -126,19 +126,22 @@ def __update_course(config_object: SemesterConfig, course_code: str):
         ValueError: If no course of the given course code was returned from the
             MyCampus API.
     """
-    course_objects = decode(
-        get_json_course_data(mep_code=config_object.api_mycampus_mep_code,
-                             term_id=config_object.api_mycampus_term_id,
-                             course_code=course_code))
+    course_code = op_course_code_valid_format(course_code)
 
-    if len(course_objects) > 0:
-        for course_obj in course_objects:
-            update_course_record(course_table=config_object.get_db_table(),
-                                 c=course_obj)
-            # TODO: Should make this multi threaded maybe. Takes a long time
-            #  updating records of each course individually.
-    else:
-        raise ValueError(f"Course code {course_code} not found!")
+    if course_code is not None:
+        course_objects = decode(
+            get_json_course_data(mep_code=config_object.api_mycampus_mep_code,
+                                 term_id=config_object.api_mycampus_term_id,
+                                 course_code=course_code))
+
+        if len(course_objects) > 0:
+            for course_obj in course_objects:
+                update_course_record(course_table=config_object.get_db_table(),
+                                     c=course_obj)
+                # TODO: Should make this multi threaded maybe. Takes a long time
+                #  updating records of each course individually.
+        else:
+            raise ValueError(f"Course code {course_code} not found!")
 
 
 def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int],
