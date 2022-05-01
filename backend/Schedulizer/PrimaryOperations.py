@@ -105,7 +105,7 @@ def op_update_courses_with_overhead(config_object: SemesterConfig,
     course_codes = list(set(course_codes))
 
     for course_code in course_codes:
-        if not is_up_to_date(course_table=config_object.db_table,
+        if not is_up_to_date(course_table=config_object.get_db_table(),
                              fac=course_code[:-5],
                              uid=course_code[-5:]):
             __update_course(config_object=config_object,
@@ -118,7 +118,7 @@ def __update_course(config_object: SemesterConfig, course_code: str):
 
     Args:
         config_object: SemesterConfig object holding semester calendar info.
-            (Typically = SemesterConfig.db_table).
+            (Typically = SemesterConfig.get_db_table()).
         course_code: course to search by API for and update on internal
             DBController.
 
@@ -133,7 +133,7 @@ def __update_course(config_object: SemesterConfig, course_code: str):
 
     if len(course_objects) > 0:
         for course_obj in course_objects:
-            update_course_record(course_table=config_object.db_table,
+            update_course_record(course_table=config_object.get_db_table(),
                                  c=course_obj)
             # TODO: Should make this multi threaded maybe. Takes a long time
             #  updating records of each course individually.
@@ -148,7 +148,7 @@ def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int],
 
     Args:
         config_object: SemesterConfig object holding semester calendar info.
-            (Typically = SemesterConfig.db_table).
+            (Typically = SemesterConfig.get_db_table()).
         crn_codes: List of crn codes to find matching crn codes for.
         cache_id: cache id, default None.
 
@@ -165,7 +165,7 @@ def op_generate_ics(config_object: SemesterConfig, crn_codes: list[int],
     courses_list = []
 
     for crn in crn_codes:
-        course = get_course_via_crn(course_table=config_object.db_table,
+        course = get_course_via_crn(course_table=config_object.get_db_table(),
                                     crn=crn)
 
         if course is None:
